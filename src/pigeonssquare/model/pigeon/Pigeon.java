@@ -1,4 +1,4 @@
-package pigeonssquare.model;
+package pigeonssquare.model.pigeon;
 
 public abstract class Pigeon implements Runnable {
     protected static int SIZE;

@@ -1,4 +1,6 @@
-package pigeonssquare.model;
+package pigeonssquare.model.pigeon.type;
+
+import pigeonssquare.model.pigeon.Pigeon;
 
 /**
  * Un colombin

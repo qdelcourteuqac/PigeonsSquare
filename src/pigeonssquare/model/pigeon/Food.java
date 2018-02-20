@@ -1,4 +1,4 @@
-package pigeonssquare.model;
+package pigeonssquare.model.pigeon;
 
 public class Food {
     private static int SIZE = 1;
@@ -11,11 +11,11 @@ public class Food {
         this.fresh = true;
     }
 
-    public void setFresh(boolean isFresh) {
-        this.fresh = isFresh;
-    }
-
     public boolean isFresh() {
         return this.fresh;
+    }
+
+    public void setFresh(boolean isFresh) {
+        this.fresh = isFresh;
     }
 }
