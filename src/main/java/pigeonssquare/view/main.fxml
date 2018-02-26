@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.pigeonssquare.MainController">
+    <MenuBar VBox.vgrow="NEVER">
+        <Menu mnemonicParsing="false" text="File">
+            <MenuItem mnemonicParsing="false" text="New" />
+            <MenuItem mnemonicParsing="false" text="Open…" />
+            <Menu mnemonicParsing="false" text="Open Recent" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Close" />
+            <MenuItem mnemonicParsing="false" text="Save" />
+            <MenuItem mnemonicParsing="false" text="Save As…" />
+            <MenuItem mnemonicParsing="false" text="Revert" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Preferences…" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Quit" />
+        </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+            <MenuItem mnemonicParsing="false" text="Undo" />
+            <MenuItem mnemonicParsing="false" text="Redo" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Cut" />
+            <MenuItem mnemonicParsing="false" text="Copy" />
+            <MenuItem mnemonicParsing="false" text="Paste" />
+            <MenuItem mnemonicParsing="false" text="Delete" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Select All" />
+            <MenuItem mnemonicParsing="false" text="Unselect All" />
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+        </Menu>
+    </MenuBar>
+    <SplitPane dividerPositions="0.22383073496659242, 0.7483296213808464" focusTraversable="true" VBox.vgrow="ALWAYS">
+        <AnchorPane fx:id="control">
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="549.0" prefWidth="197.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <Label alignment="CENTER" style="&#10;" text="Control" textAlignment="CENTER">
+                    <font>
+                        <Font size="18.0" fx:id="x1" />
+                    </font>
+                    <textFill>
+                        <Color blue="0.624" green="0.624" red="0.624" fx:id="x2" />
+                    </textFill>
+                    <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                    </VBox.margin>
+                </Label>
+                <Accordion maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                    <panes>
+                        <TitledPane animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Pigeon">
+                            <AnchorPane />
+                        </TitledPane>
+                        <TitledPane animated="false" text="Nourriture">
+                            <AnchorPane />
+                        </TitledPane>
+                        <TitledPane animated="false" text="Pierre">
+                            <AnchorPane />
+                        </TitledPane>
+                    </panes>
+                </Accordion>
+                <ToggleButton fx:id="actionSimulation" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Démarrer la simulation" />
+            </VBox>
+        </AnchorPane>
+         <AnchorPane id="Content" fx:id="grid" prefHeight="545.0" prefWidth="430.0" />
+        <AnchorPane fx:id="details">
+            <VBox layoutX="14.0" layoutY="14.0" prefHeight="549.0" prefWidth="222.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <padding>
+                    <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                </padding>
+                <Label alignment="CENTER" font="$x1" style="&#10;" text="Details" textAlignment="CENTER" textFill="$x2" />
+            </VBox>
+        </AnchorPane>
+    </SplitPane>
+    <HBox id="HBox" alignment="CENTER_LEFT" prefWidth="900.0" spacing="5.0" VBox.vgrow="NEVER">
+        <padding>
+            <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+        </padding>
+        <Label maxHeight="1.7976931348623157E308" text="Left status" HBox.hgrow="ALWAYS">
+            <font>
+                <Font size="11.0" fx:id="x3" />
+            </font>
+            <textFill>
+                <Color blue="0.625" green="0.625" red="0.625" fx:id="x4" />
+            </textFill>
+        </Label>
+        <Pane HBox.hgrow="ALWAYS" />
+        <Label font="$x3" text="Right status" textFill="$x4" HBox.hgrow="NEVER" />
+    </HBox>
+</VBox>

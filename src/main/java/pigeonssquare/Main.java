@@ -16,7 +16,7 @@ public class Main extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("../../resources/main.css").toExternalForm());
         primaryStage.setTitle("Pigeons Square");
-        primaryStage.setMaximized(true);
+//        primaryStage.setMaximized(true);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

@@ -1,6 +1,8 @@
-package pigeonssquare.model.pigeon;
+package main.java.pigeonssquare.model.pigeon;
 
-public class Food {
+import main.java.pigeonssquare.model.grid.cell.Cellulable;
+
+public class Food implements Cellulable {
     private static int SIZE = 1;
     // Temps en ms jusqu'auquel la nourriture n'est plus fraiche
     private static int DURABILITY = 5000;
