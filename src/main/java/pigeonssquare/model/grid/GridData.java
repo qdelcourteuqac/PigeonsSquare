@@ -2,12 +2,18 @@ package main.java.pigeonssquare.model.grid;
 
 import main.java.pigeonssquare.model.grid.cell.Cell;
 import main.java.pigeonssquare.model.grid.cell.Cellulable;
+import main.java.pigeonssquare.model.grid.cell.Ground;
+import main.java.pigeonssquare.model.grid.event.Direction;
+import main.java.pigeonssquare.model.grid.event.EventManager;
+import main.java.pigeonssquare.model.grid.event.GridModelEvent;
+import main.java.pigeonssquare.model.pigeon.Pigeon;
 
 /**
  * Données du plateau de jeu
  */
 public class GridData {
 
+    private final EventManager eventManager;
     private int columnCount;
     private int rowCount;
     private Cell[][] cells;
@@ -18,9 +24,8 @@ public class GridData {
      * @param rowCount    nombre de lignes
      * @param columnCount nombre de colonnes
      */
-    public GridData(int rowCount, int columnCount)
-
-    {
+    public GridData(int rowCount, int columnCount) {
+        this.eventManager = EventManager.getInstance();
         this.columnCount = columnCount;
         this.rowCount = rowCount;
         this.cells = new Cell[rowCount][columnCount];
@@ -66,16 +71,71 @@ public class GridData {
         this.cells[row][column] = new Cell(value);
     }
 
-
-    public synchronized void moveCell(Cellulable cell, int finalRow, int finalColumn) {
-        int row;
-        int column;
-        for (row = 0; row < this.getRowCount(); row++) {
-            for (column = 0; column < this.getColumnCount(); column++) {
-                if (this.getCell(row, column) == cell) {
+    /**
+     * Déplacer la cellule suivant une direction.
+     *
+     * @param cell      cellule à déplacer
+     * @param direction direction
+     * @throws Exception
+     */
+    public synchronized void moveCell(Cellulable cell, Direction direction) throws Exception {
+        // check existence of cell in grid
+        int cellRow = -1;
+        int cellColumn = -1;
+        for (int row = 0; row < this.getRowCount(); row++) {
+            for (int column = 0; column < this.getColumnCount(); column++) {
+                if (this.getCell(row, column).getValue() == cell) {
+                    cellRow = row;
+                    cellColumn = column;
                     break;
                 }
             }
         }
+
+        if (cellRow == -1) {
+            //throw new Exception("Cell does not exist in grid");
+            return;
+        }
+
+        // determine new coord row and column with direction
+        int newRow = cellRow;
+        int newColumn = cellColumn;
+        switch(direction) {
+            case NORTH:
+                newRow -= 1;
+                break;
+            case SOUTH:
+                newRow += 1;
+                break;
+            case EAST:
+                newColumn -= 1;
+                break;
+            case WEST:
+                newColumn += 1;
+                break;
+        }
+
+        // check: out of grid
+        if (newRow < 0 || newRow >= this.getRowCount() || newColumn < 0 || newColumn >= this.getColumnCount()) {
+            //throw new Exception("Impossible move : Out of grid !");
+            return;
+        }
+
+        // collisions
+        // TODO: collisions with food !
+        Cell nextCell = this.getCell(newRow, newColumn);
+        if (!nextCell.getValue().getClass().equals(Ground.class)) {
+            //throw new Exception("Collision with another object which stand already there");
+            return;
+        }
+
+        // do move and replace by ground former cell
+        this.initCell(newRow, newColumn, cell);
+        Cellulable former = new Ground();
+        this.initCell(cellRow, cellColumn, former);
+        this.eventManager.setChanged();
+        this.eventManager.notifyObservers(new GridModelEvent(GridModelEvent.EventType.UPDATE_CELL_VIEW_EVENT, former, cellRow, cellColumn));
+        this.eventManager.setChanged();
+        this.eventManager.notifyObservers(new GridModelEvent(GridModelEvent.EventType.UPDATE_CELL_VIEW_EVENT, cell, newRow, newColumn));
     }
 }

@@ -1,15 +1,11 @@
 package main.java.pigeonssquare;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import main.java.pigeonssquare.model.grid.GridModel;
 import main.java.pigeonssquare.model.grid.GridView;
-import main.java.pigeonssquare.model.grid.cell.Cellulable;
 import main.java.pigeonssquare.model.grid.event.EventManager;
-import main.java.pigeonssquare.model.grid.event.GridModelEvent;
 import main.java.pigeonssquare.model.grid.event.SimulationEvent;
 
 public class MainController {
@@ -46,15 +42,17 @@ public class MainController {
 
         this.actionSimulation.setOnAction(event -> {
             if (actionSimulation.isSelected()) {
+                actionSimulation.setText("Arrêter la simulation");
                 this.onStartSimulation();
             } else {
+                actionSimulation.setText("Démarrer la simulation");
                 this.onStopSimulation();
             }
         });
-
     }
 
-    public void onStartSimulation() {
+
+    private void onStartSimulation() {
         System.out.println("Start simulation");
         this.eventManager.setChanged();
         this.eventManager.notifyObservers(new SimulationEvent(SimulationEvent.SimulationEventType.START_SIMULATION));

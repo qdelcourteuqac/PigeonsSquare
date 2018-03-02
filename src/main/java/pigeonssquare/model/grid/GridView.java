@@ -3,6 +3,7 @@ package main.java.pigeonssquare.model.grid;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import main.java.pigeonssquare.controller.GridController;
+import main.java.pigeonssquare.model.grid.cell.Cellulable;
 import main.java.pigeonssquare.model.grid.event.EventManager;
 import main.java.pigeonssquare.model.grid.event.GridModelEvent;
 
@@ -38,8 +39,6 @@ public class GridView extends GridPane implements Observer {
             this.setOnMouseClicked(event -> GridView.this.controller.onCellClicked(event, row, column));
             this.row = row;
             this.column = column;
-            this.updateActiveState();
-            this.updateLockedState();
 
             Class cellulable = GridView.this.model.getValue(row, column).getClass();
 
@@ -47,17 +46,9 @@ public class GridView extends GridPane implements Observer {
             this.getStyleClass().add(cellulable.getSimpleName());
         }
 
-        /**
-         * Met à jour le style de la vue ("active" ou "inactive", en fonction de l'état du modèle)
-         */
-        void updateActiveState() {
-
-        }
-
-        /**
-         * Met à jour le style de la vue ("locked" ou non, en fonction de l'état du modèle)
-         */
-        void updateLockedState() {
+        public synchronized void updateView(Cellulable instance) {
+            this.getStyleClass().clear();
+            this.getStyleClass().add(instance.getClass().getSimpleName());
         }
     }
 
@@ -95,16 +86,18 @@ public class GridView extends GridPane implements Observer {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
+    public synchronized void update(Observable o, Object arg) {
         if (!(arg instanceof GridModelEvent)) {
             return;
         }
 
         GridModelEvent event = (GridModelEvent) arg;
         switch (event.eventType) {
-
             case START_EVENT:
                 this.init();
+                break;
+            case UPDATE_CELL_VIEW_EVENT:
+                this.cellViews[event.row][event.column].updateView(event.instance);
                 break;
         }
     }

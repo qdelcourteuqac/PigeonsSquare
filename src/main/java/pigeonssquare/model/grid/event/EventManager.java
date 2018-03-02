@@ -14,7 +14,6 @@ public class EventManager extends Observable {
         return instance;
     }
 
-    // TODO Can we do better ?
     @Override
     public void setChanged(){
         super.setChanged();
