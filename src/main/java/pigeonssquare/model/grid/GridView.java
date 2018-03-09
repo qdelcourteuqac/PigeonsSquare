@@ -1,5 +1,6 @@
 package main.java.pigeonssquare.model.grid;
 
+import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import main.java.pigeonssquare.controller.GridController;
@@ -20,6 +21,7 @@ public class GridView extends GridPane implements Observer {
 
     public GridView() {
         this.eventManager = EventManager.getInstance();
+        this.eventManager.subscribe(this, GridModelEvent.class);
     }
 
     public class CellView extends Label {
@@ -35,7 +37,6 @@ public class GridView extends GridPane implements Observer {
          */
         CellView(int row, int column) {
             super("");
-
             this.setOnMouseClicked(event -> GridView.this.controller.onCellClicked(event, row, column));
             this.row = row;
             this.column = column;
@@ -43,12 +44,16 @@ public class GridView extends GridPane implements Observer {
             Class cellulable = GridView.this.model.getValue(row, column).getClass();
 
             // We must have a css class by class name
+            this.getStyleClass().add("Cell");
             this.getStyleClass().add(cellulable.getSimpleName());
         }
 
-        public synchronized void updateView(Cellulable instance) {
-            this.getStyleClass().clear();
-            this.getStyleClass().add(instance.getClass().getSimpleName());
+        public void updateView(Cellulable instance) {
+            Platform.runLater(()->{
+                this.getStyleClass().clear();
+                this.getStyleClass().add("Cell");
+                this.getStyleClass().add(instance.getClass().getSimpleName());
+            });
         }
     }
 

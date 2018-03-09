@@ -1,31 +1,26 @@
-.CollaredDove {
-    -fx-background-color: black;
+.Cell {
     -fx-pref-height: 20px;
     -fx-pref-width: 20px;
+}
+
+.CollaredDove {
+    -fx-background-color: black;
 }
 
 .RockDove {
     -fx-background-color: pink;
-    -fx-pref-height: 20px;
-    -fx-pref-width: 20px;
 }
 
 .StockDove {
     -fx-background-color: yellow;
-    -fx-pref-height: 20px;
-    -fx-pref-width: 20px;
 }
 
 .Food {
     -fx-background-color: green;
-    -fx-pref-height: 20px;
-    -fx-pref-width: 20px;
 }
 
 .Ground {
     -fx-background-color: brown;
-    -fx-pref-height: 20px;
-    -fx-pref-width: 20px;
 }
 
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */

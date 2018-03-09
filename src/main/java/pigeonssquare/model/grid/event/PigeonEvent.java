@@ -2,7 +2,7 @@ package main.java.pigeonssquare.model.grid.event;
 
 import main.java.pigeonssquare.model.pigeon.Pigeon;
 
-public class PigeonEvent {
+public class PigeonEvent extends Event {
 
     public Pigeon instance;
     public PigeonEventType eventType;

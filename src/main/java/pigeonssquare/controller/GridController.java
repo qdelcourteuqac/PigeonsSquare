@@ -23,8 +23,6 @@ public class GridController {
      */
     public void onCellClicked(MouseEvent event, int row, int column) {
         System.out.printf("Clicked in (%d;%d) !\n", row, column);
-        Cellulable cellulable = gridView.getModel().getValue(row, column);
-        gridView.getModel().moveCell((Pigeon)cellulable, Direction.SOUTH);
     }
 
 }

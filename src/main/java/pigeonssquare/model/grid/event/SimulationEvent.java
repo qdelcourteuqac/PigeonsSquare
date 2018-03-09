@@ -1,6 +1,6 @@
 package main.java.pigeonssquare.model.grid.event;
 
-public class SimulationEvent {
+public class SimulationEvent extends Event {
 
     public SimulationEventType eventType;
 

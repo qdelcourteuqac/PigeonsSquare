@@ -1,10 +1,7 @@
 package main.java.pigeonssquare.model.pigeon;
 
 import main.java.pigeonssquare.model.grid.cell.Cellulable;
-import main.java.pigeonssquare.model.grid.event.Direction;
-import main.java.pigeonssquare.model.grid.event.EventManager;
-import main.java.pigeonssquare.model.grid.event.PigeonEvent;
-import main.java.pigeonssquare.model.grid.event.SimulationEvent;
+import main.java.pigeonssquare.model.grid.event.*;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -18,8 +15,8 @@ public abstract class Pigeon implements Observer, Runnable, Cellulable {
 
     public Pigeon() {
         this.eventManager = EventManager.getInstance();
-
-        eventManager.addObserver(this);
+        this.eventManager.addObserver(this);
+        this.eventManager.subscribe(this, SimulationEvent.class);
     }
 
     @Override
@@ -38,8 +35,7 @@ public abstract class Pigeon implements Observer, Runnable, Cellulable {
                 } else {
                     direction = Direction.WEST;
                 }
-                this.eventManager.setChanged();
-                this.eventManager.notifyObservers(new PigeonEvent(this, MOVING, direction));
+                this.eventManager.notify(new PigeonEvent(this, MOVING, direction));
                 Thread.sleep(200);
             } catch (Exception e) {
                 Thread.currentThread().interrupt();

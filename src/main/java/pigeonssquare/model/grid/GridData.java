@@ -133,9 +133,7 @@ public class GridData {
         this.initCell(newRow, newColumn, cell);
         Cellulable former = new Ground();
         this.initCell(cellRow, cellColumn, former);
-        this.eventManager.setChanged();
-        this.eventManager.notifyObservers(new GridModelEvent(GridModelEvent.EventType.UPDATE_CELL_VIEW_EVENT, former, cellRow, cellColumn));
-        this.eventManager.setChanged();
-        this.eventManager.notifyObservers(new GridModelEvent(GridModelEvent.EventType.UPDATE_CELL_VIEW_EVENT, cell, newRow, newColumn));
+        this.eventManager.notify(new GridModelEvent(GridModelEvent.EventType.UPDATE_CELL_VIEW_EVENT, former, cellRow, cellColumn));
+        this.eventManager.notify(new GridModelEvent(GridModelEvent.EventType.UPDATE_CELL_VIEW_EVENT, cell, newRow, newColumn));
     }
 }

@@ -2,7 +2,7 @@ package main.java.pigeonssquare.model.grid.event;
 
 import main.java.pigeonssquare.model.grid.cell.Cellulable;
 
-public class GridModelEvent {
+public class GridModelEvent extends Event {
 
     public int column;
     public int row;

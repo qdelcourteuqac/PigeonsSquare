@@ -19,8 +19,10 @@ public class GridModel implements Observer{
     private GridDataFactory boardDataFactory;
 
     public GridModel() {
-        eventManager = EventManager.getInstance();
-        eventManager.addObserver(this);
+        this.eventManager = EventManager.getInstance();
+        this.eventManager.addObserver(this);
+        this.eventManager.subscribe(this, PigeonEvent.class);
+
         this.data = null;
         this.boardDataFactory = new DefaultGridDataFactory();
     }
@@ -52,8 +54,7 @@ public class GridModel implements Observer{
      */
     public void startGame() {
         this.data = boardDataFactory.createBoardData();
-        this.eventManager.setChanged();
-        this.eventManager.notifyObservers(new GridModelEvent(GridModelEvent.EventType.START_EVENT));
+        this.eventManager.notify(new GridModelEvent(GridModelEvent.EventType.START_EVENT));
     }
 
     @Override
