@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -63,20 +63,17 @@
                         <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                     </VBox.margin>
                 </Label>
-                <Accordion maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
-                    <panes>
-                        <TitledPane animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Pigeon">
-                            <AnchorPane />
-                        </TitledPane>
-                        <TitledPane animated="false" text="Nourriture">
-                            <AnchorPane />
-                        </TitledPane>
-                        <TitledPane animated="false" text="Pierre">
-                            <AnchorPane />
-                        </TitledPane>
-                    </panes>
-                </Accordion>
-                <ToggleButton fx:id="actionSimulation" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Démarrer la simulation" />
+                <ToggleButton fx:id="actionSimulation" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Démarrer la simulation">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin></ToggleButton>
+            <Separator prefWidth="200.0">
+               <VBox.margin>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </VBox.margin>
+            </Separator>
+            <RadioButton fx:id="food" mnemonicParsing="false" text="Nourriture" />
+            <RadioButton fx:id="rock" mnemonicParsing="false" text="Pierre" />
             </VBox>
         </AnchorPane>
          <AnchorPane id="Content" fx:id="grid" prefHeight="545.0" prefWidth="430.0" />

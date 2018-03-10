@@ -1,10 +1,13 @@
 package main.java.pigeonssquare.model.grid;
 
+import main.java.pigeonssquare.model.grid.cell.Cell;
 import main.java.pigeonssquare.model.grid.cell.Cellulable;
+import main.java.pigeonssquare.model.grid.cell.Ground;
 import main.java.pigeonssquare.model.grid.event.Direction;
 import main.java.pigeonssquare.model.grid.event.EventManager;
 import main.java.pigeonssquare.model.grid.event.GridModelEvent;
 import main.java.pigeonssquare.model.grid.event.PigeonEvent;
+import main.java.pigeonssquare.model.grid.factory.CellulableFactory;
 import main.java.pigeonssquare.model.grid.factory.DefaultGridDataFactory;
 import main.java.pigeonssquare.model.grid.factory.GridDataFactory;
 import main.java.pigeonssquare.model.pigeon.Pigeon;
@@ -67,7 +70,6 @@ public class GridModel implements Observer{
         switch (event.eventType) {
             case MOVING:
                 try {
-                    //System.out.println(event.instance+ " ; "+data.getCell(data.getRowCount()-1,7).getValue());
                     data.moveCell(event.instance, event.direction);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -76,11 +78,7 @@ public class GridModel implements Observer{
         }
     }
 
-    public void moveCell(Pigeon instance, Direction direction) {
-        try {
-            data.moveCell(instance, direction);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void place(Class<? extends Cellulable> action, int row, int column) {
+        data.place(action, row, column);
     }
 }

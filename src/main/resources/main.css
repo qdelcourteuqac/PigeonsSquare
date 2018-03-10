@@ -19,6 +19,10 @@
     -fx-background-color: green;
 }
 
+.Rock {
+    -fx-background-color: grey;
+}
+
 .Ground {
     -fx-background-color: brown;
 }

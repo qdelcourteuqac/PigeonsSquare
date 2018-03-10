@@ -57,6 +57,10 @@ public class GridView extends GridPane implements Observer {
         }
     }
 
+    public GridController getController() {
+        return controller;
+    }
+
     /**
      * Accesseur sur le BoardModel
      *

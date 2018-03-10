@@ -1,12 +1,17 @@
 package main.java.pigeonssquare;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import main.java.pigeonssquare.model.grid.GridModel;
 import main.java.pigeonssquare.model.grid.GridView;
+import main.java.pigeonssquare.model.grid.cell.Cellulable;
 import main.java.pigeonssquare.model.grid.event.EventManager;
 import main.java.pigeonssquare.model.grid.event.SimulationEvent;
+import main.java.pigeonssquare.model.pigeon.Food;
+import main.java.pigeonssquare.model.pigeon.Rock;
 
 public class MainController {
 
@@ -21,6 +26,12 @@ public class MainController {
 
     @FXML
     public ToggleButton actionSimulation;
+
+    @FXML
+    public RadioButton food;
+
+    @FXML
+    public RadioButton rock;
 
     private GridView gridView;
     private EventManager eventManager;
@@ -48,6 +59,26 @@ public class MainController {
                 actionSimulation.setText("Démarrer la simulation");
                 this.onStopSimulation();
             }
+        });
+
+        ToggleGroup actions = new ToggleGroup();
+        this.food.setToggleGroup(actions);
+        this.rock.setToggleGroup(actions);
+
+        actions.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            Class<? extends Cellulable> action;
+            switch (((RadioButton) newValue).getId()) {
+                case "rock":
+                    action = Rock.class;
+                    break;
+                case "food":
+                    action = Food.class;
+                    break;
+                default:
+                    action = Food.class;
+            }
+
+            gridView.getController().setAction(action);
         });
     }
 
