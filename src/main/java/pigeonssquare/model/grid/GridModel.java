@@ -1,16 +1,11 @@
 package main.java.pigeonssquare.model.grid;
 
-import main.java.pigeonssquare.model.grid.cell.Cell;
 import main.java.pigeonssquare.model.grid.cell.Cellulable;
-import main.java.pigeonssquare.model.grid.cell.Ground;
-import main.java.pigeonssquare.model.grid.event.Direction;
 import main.java.pigeonssquare.model.grid.event.EventManager;
 import main.java.pigeonssquare.model.grid.event.GridModelEvent;
 import main.java.pigeonssquare.model.grid.event.PigeonEvent;
-import main.java.pigeonssquare.model.grid.factory.CellulableFactory;
 import main.java.pigeonssquare.model.grid.factory.DefaultGridDataFactory;
 import main.java.pigeonssquare.model.grid.factory.GridDataFactory;
-import main.java.pigeonssquare.model.pigeon.Pigeon;
 
 import java.util.Observable;
 import java.util.Observer;

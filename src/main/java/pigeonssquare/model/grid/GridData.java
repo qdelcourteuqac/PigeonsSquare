@@ -6,8 +6,8 @@ import main.java.pigeonssquare.model.grid.cell.Ground;
 import main.java.pigeonssquare.model.grid.event.Direction;
 import main.java.pigeonssquare.model.grid.event.EventManager;
 import main.java.pigeonssquare.model.grid.event.GridModelEvent;
+import main.java.pigeonssquare.model.grid.event.PlaceEvent;
 import main.java.pigeonssquare.model.grid.factory.CellulableFactory;
-import main.java.pigeonssquare.model.pigeon.Pigeon;
 
 /**
  * Données du plateau de jeu
@@ -85,7 +85,9 @@ public class GridData {
             System.out.println("Summon "+ action + " at "+row+";"+column);
             Cellulable cellulable = CellulableFactory.getInstanceOf(action);
             this.initCell(row, column, cellulable);
+
             this.eventManager.notify(new GridModelEvent(GridModelEvent.EventType.UPDATE_CELL_VIEW_EVENT, cellulable, row, column));
+            this.eventManager.notify(new PlaceEvent(action, row, column));
         }
     }
 
