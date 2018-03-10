@@ -1,18 +1,23 @@
 .Cell {
     -fx-pref-height: 20px;
     -fx-pref-width: 20px;
+    -fx-alignment: center;
 }
 
 .CollaredDove {
     -fx-background-color: black;
+    -fx-text-fill: white;
+
 }
 
 .RockDove {
     -fx-background-color: pink;
+    -fx-text-fill: black;
 }
 
 .StockDove {
     -fx-background-color: yellow;
+    -fx-text-fill: black;
 }
 
 .Food {
