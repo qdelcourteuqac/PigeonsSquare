@@ -25,44 +25,6 @@ public class GridView extends GridPane implements Observer {
         this.eventManager.subscribe(this, GridModelEvent.class);
     }
 
-    public class CellView extends Label {
-
-        final int row;
-        final int column;
-
-        /**
-         * Constructeur
-         *
-         * @param row    ligne
-         * @param column colonne
-         */
-        CellView(int row, int column) {
-            super("");
-            this.setOnMouseClicked(event -> GridView.this.controller.onCellClicked(event, row, column));
-            this.row = row;
-            this.column = column;
-
-            Cellulable cellulable = GridView.this.model.getValue(row, column);
-
-            // We must have a css class by class name
-            this.updateView(cellulable);
-        }
-
-        public void updateView(Cellulable instance) {
-            Platform.runLater(()->{
-                if (instance instanceof Pigeon) {
-                    this.setText(((Pigeon) instance).getScore()+"");
-                } else {
-                    this.setText("");
-                }
-
-                this.getStyleClass().clear();
-                this.getStyleClass().add("Cell");
-                this.getStyleClass().add(instance.getClass().getSimpleName());
-            });
-        }
-    }
-
     public GridController getController() {
         return controller;
     }
@@ -114,6 +76,44 @@ public class GridView extends GridPane implements Observer {
             case UPDATE_CELL_VIEW_EVENT:
                 this.cellViews[event.row][event.column].updateView(event.instance);
                 break;
+        }
+    }
+
+    public class CellView extends Label {
+
+        final int row;
+        final int column;
+
+        /**
+         * Constructeur
+         *
+         * @param row    ligne
+         * @param column colonne
+         */
+        CellView(int row, int column) {
+            super("");
+            this.setOnMouseClicked(event -> GridView.this.controller.onCellClicked(event, row, column));
+            this.row = row;
+            this.column = column;
+
+            Cellulable cellulable = GridView.this.model.getValue(row, column);
+
+            // We must have a css class by class name
+            this.updateView(cellulable);
+        }
+
+        public void updateView(Cellulable instance) {
+            Platform.runLater(() -> {
+                if (instance instanceof Pigeon) {
+                    this.setText(((Pigeon) instance).getScore() + "");
+                } else {
+                    this.setText("");
+                }
+
+                this.getStyleClass().clear();
+                this.getStyleClass().add("Cell");
+                this.getStyleClass().add(instance.getClass().getSimpleName());
+            });
         }
     }
 }

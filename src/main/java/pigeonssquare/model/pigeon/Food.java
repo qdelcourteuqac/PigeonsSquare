@@ -1,8 +1,11 @@
 package main.java.pigeonssquare.model.pigeon;
 
 import main.java.pigeonssquare.model.grid.cell.Cellulable;
+import main.java.pigeonssquare.model.grid.cell.Ground;
 import main.java.pigeonssquare.model.grid.event.EventManager;
+import main.java.pigeonssquare.model.grid.event.GridModelEvent;
 import main.java.pigeonssquare.model.grid.event.SimulationEvent;
+import main.java.pigeonssquare.model.grid.factory.CellulableFactory;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -34,20 +37,25 @@ public class Food implements Cellulable, Runnable, Observer {
 
     @Override
     public void run() {
-        while(!Thread.currentThread().isInterrupted()) {
+        while (!Thread.currentThread().isInterrupted()) {
             try {
-                System.out.println("Food spawn");
                 // Wait DURABILITY
                 Thread.sleep(Food.DURABILITY);
-                System.out.println("Food no more fresh");
                 // Food is now not fresh
                 this.fresh = false;
-                System.out.println("Wait for dispawn");
                 // Wait until DISPAWN
                 Thread.sleep(Food.UNTIL_DISPAWN);
-                System.out.println("Food dispawning");
                 Thread.currentThread().interrupt();
                 this.currentThread.interrupt();
+                int[] foodCoordinate = this.getEnvironment().getCoordinate(this);
+                if (foodCoordinate != null) {
+
+                    Cellulable ground = CellulableFactory.getInstanceOf(Ground.class);
+                    this.getEnvironment().initCell(foodCoordinate[0], foodCoordinate[1], ground);
+
+                    this.eventManager.notify(new GridModelEvent(GridModelEvent.EventType.UPDATE_CELL_VIEW_EVENT, ground, foodCoordinate[0], foodCoordinate[1]));
+
+                }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             } catch (Exception e) {
@@ -55,6 +63,10 @@ public class Food implements Cellulable, Runnable, Observer {
                 e.printStackTrace();
             }
         }
+    }
+
+    public Thread getCurrentThread() {
+        return currentThread;
     }
 
     @Override

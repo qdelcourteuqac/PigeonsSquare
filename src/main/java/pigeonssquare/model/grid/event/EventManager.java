@@ -12,8 +12,8 @@ public class EventManager extends Observable {
         this.listeners = new HashMap<>();
     }
 
-    public static EventManager getInstance(){
-        if(instance == null){
+    public static EventManager getInstance() {
+        if (instance == null) {
             instance = new EventManager();
         }
 
@@ -41,7 +41,7 @@ public class EventManager extends Observable {
     }
 
     public void notify(Event event) {
-        this.listeners.forEach((observer, events)->{
+        this.listeners.forEach((observer, events) -> {
             if (events.contains(event.getClass())) {
                 observer.update(this, event);
             }
@@ -49,7 +49,7 @@ public class EventManager extends Observable {
     }
 
     @Override
-    public void setChanged(){
+    public void setChanged() {
         super.setChanged();
     }
 

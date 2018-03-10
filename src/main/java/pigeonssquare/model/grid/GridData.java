@@ -68,7 +68,11 @@ public class GridData {
      * @return cellule
      */
     public Cell getCell(int row, int column) {
-        return cells[row][column];
+        try {
+            return cells[row][column];
+        } catch (ArrayIndexOutOfBoundsException $e) {
+            return null;
+        }
     }
 
     public int[] getCoordinate(Cellulable cellulable) throws IllegalStateException {
@@ -80,7 +84,7 @@ public class GridData {
                 }
             }
         }
-        throw new IllegalStateException("Cannot found this cellulable !");
+        return null;
     }
 
     /**
@@ -104,9 +108,13 @@ public class GridData {
     public void place(Class<? extends Cellulable> action, int row, int column) {
         Cell cell = this.getCell(row, column);
         if (cell.getValue().getClass() == Ground.class) {
-            System.out.println("Summon " + action + " at " + row + ";" + column);
+            System.out.println("Summon " + action.getSimpleName() + " at " + row + ";" + column);
             Cellulable cellulable = CellulableFactory.getInstanceOf(action);
             this.initCell(row, column, cellulable);
+
+            if (cellulable instanceof Food) {
+                ((Food) cellulable).getCurrentThread().start();
+            }
 
             this.eventManager.notify(new GridModelEvent(GridModelEvent.EventType.UPDATE_CELL_VIEW_EVENT, cellulable, row, column));
         }
@@ -161,7 +169,7 @@ public class GridData {
 
         // collisions
         Cell nextCell = this.getCell(newRow, newColumn);
-        if (nextCell.getValue().getClass() == Food.class) {
+        if (nextCell.getValue().getClass() == Food.class && ((Food) nextCell.getValue()).isFresh()) {
             // eat food
             Pigeon pigeon = (Pigeon) cell;
             pigeon.updateScore();
@@ -190,10 +198,13 @@ public class GridData {
         return cells;
     }
 
-    public double getDistance(Cellulable from, Cellulable to) {
+    public Double getDistance(Cellulable from, Cellulable to) {
         int[] fromCoordinate = this.getCoordinate(from);
         int[] toCoordinate = this.getCoordinate(to);
 
+        if (fromCoordinate == null || toCoordinate == null) {
+            return null;
+        }
         return Math.sqrt(Math.pow((fromCoordinate[0] - toCoordinate[0]), 2) + Math.pow((fromCoordinate[1] - toCoordinate[1]), 2));
     }
 }

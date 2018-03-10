@@ -10,6 +10,10 @@ import java.io.IOException;
 
 public class Main extends Application {
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
     public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("view/main.fxml"));
@@ -19,9 +23,5 @@ public class Main extends Application {
 //        primaryStage.setMaximized(true);
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

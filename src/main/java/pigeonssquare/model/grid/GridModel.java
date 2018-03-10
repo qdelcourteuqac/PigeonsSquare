@@ -10,7 +10,7 @@ import main.java.pigeonssquare.model.grid.factory.GridDataFactory;
 import java.util.Observable;
 import java.util.Observer;
 
-public class GridModel implements Observer{
+public class GridModel implements Observer {
 
     private EventManager eventManager;
     private GridData data;

@@ -26,7 +26,6 @@ public class GridController {
      * @param column colonne de la cellule cliquée
      */
     public void onCellClicked(MouseEvent event, int row, int column) {
-        System.out.printf("Clicked in (%d;%d) !\n", row, column);
 
         if (this.action != null) {
             this.gridView.getModel().place(action, row, column);
