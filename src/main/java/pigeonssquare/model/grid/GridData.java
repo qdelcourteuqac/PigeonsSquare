@@ -6,13 +6,17 @@ import main.java.pigeonssquare.model.grid.cell.Ground;
 import main.java.pigeonssquare.model.grid.event.Direction;
 import main.java.pigeonssquare.model.grid.event.EventManager;
 import main.java.pigeonssquare.model.grid.event.GridModelEvent;
-import main.java.pigeonssquare.model.grid.event.PlaceEvent;
 import main.java.pigeonssquare.model.grid.factory.CellulableFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Données du plateau de jeu
  */
 public class GridData {
+
+    public static GridData instance;
 
     private final EventManager eventManager;
     private int columnCount;
@@ -30,6 +34,10 @@ public class GridData {
         this.columnCount = columnCount;
         this.rowCount = rowCount;
         this.cells = new Cell[rowCount][columnCount];
+    }
+
+    public static GridData getInstance() {
+        return instance;
     }
 
     /**
@@ -61,6 +69,18 @@ public class GridData {
         return cells[row][column];
     }
 
+    public int[] getCoordinate(Cellulable cellulable) {
+
+        for (int row = 0; row < this.getRowCount(); row++) {
+            for (int column = 0; column < this.getColumnCount(); column++) {
+                if (this.getCell(row, column).getValue() == cellulable) {
+                    return new int[]{row, column};
+                }
+            }
+        }
+        throw new IllegalStateException("Cannot found this cellulable !");
+    }
+
     /**
      * Initialise une cellule du plateau de jeu.
      *
@@ -82,12 +102,11 @@ public class GridData {
     public void place(Class<? extends Cellulable> action, int row, int column) {
         Cell cell = this.getCell(row, column);
         if (cell.getValue().getClass() == Ground.class) {
-            System.out.println("Summon "+ action + " at "+row+";"+column);
+            System.out.println("Summon " + action + " at " + row + ";" + column);
             Cellulable cellulable = CellulableFactory.getInstanceOf(action);
             this.initCell(row, column, cellulable);
 
             this.eventManager.notify(new GridModelEvent(GridModelEvent.EventType.UPDATE_CELL_VIEW_EVENT, cellulable, row, column));
-            this.eventManager.notify(new PlaceEvent(action, row, column));
         }
     }
 
@@ -120,7 +139,7 @@ public class GridData {
         // determine new coord row and column with direction
         int newRow = cellRow;
         int newColumn = cellColumn;
-        switch(direction) {
+        switch (direction) {
             case NORTH:
                 newRow -= 1;
                 break;
@@ -155,5 +174,25 @@ public class GridData {
         this.initCell(cellRow, cellColumn, former);
         this.eventManager.notify(new GridModelEvent(GridModelEvent.EventType.UPDATE_CELL_VIEW_EVENT, former, cellRow, cellColumn));
         this.eventManager.notify(new GridModelEvent(GridModelEvent.EventType.UPDATE_CELL_VIEW_EVENT, cell, newRow, newColumn));
+    }
+
+    public List<Cell> getCells(Class<? extends Cellulable> cellType) {
+        List<Cell> cells = new ArrayList<>();
+        for (int row = 0; row < this.getRowCount(); row++) {
+            for (int column = 0; column < this.getColumnCount(); column++) {
+                Cell cell = this.getCell(row, column);
+                if (cell.getValue().getClass() == cellType) {
+                    cells.add(cell);
+                }
+            }
+        }
+        return cells;
+    }
+
+    public double getDistance(Cellulable from, Cellulable to) {
+        int[] fromCoordinate = this.getCoordinate(from);
+        int[] toCoordinate = this.getCoordinate(to);
+
+        return Math.sqrt(Math.pow((fromCoordinate[0] - toCoordinate[0]), 2) + Math.pow((fromCoordinate[1] - toCoordinate[1]), 2));
     }
 }

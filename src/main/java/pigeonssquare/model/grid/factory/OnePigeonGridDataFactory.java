@@ -11,7 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class DefaultGridDataFactory implements GridDataFactory {
+public class OnePigeonGridDataFactory implements GridDataFactory {
 
     private static int ROW_COUNT = 30;
     private static int COLUMN_COUNT = 30;
@@ -41,18 +41,8 @@ public class DefaultGridDataFactory implements GridDataFactory {
             }
         }
 
-        cellulableProbabilities.forEach((Class<? extends Cellulable> cellulable, Integer probability) -> {
 
-            final int cellNumbers = (CELLS_COUNT * probability) / 100;
-            for (int count = 0; count < cellNumbers; count++) {
-
-                int row = randomGenerator.nextInt(ROW_COUNT);
-                int column = randomGenerator.nextInt(COLUMN_COUNT);
-
-                Cellulable randomCellulable = CellulableFactory.getInstanceOf(cellulable);
-                gridData.initCell(row, column, randomCellulable);
-            }
-        });
+        gridData.initCell(15, 15, CellulableFactory.getInstanceOf(CollaredDove.class));
 
         return gridData;
     }
