@@ -9,10 +9,14 @@ import java.util.Random;
 
 
 public abstract class Pigeon implements Observer, Runnable, Cellulable {
+
+    protected Thread currentThread;
+
     protected EventManager eventManager;
 
     protected Integer rowTarget;
     protected Integer columnTarget;
+
 
     public Pigeon() {
         this.eventManager = EventManager.getInstance();
@@ -23,19 +27,15 @@ public abstract class Pigeon implements Observer, Runnable, Cellulable {
 
     @Override
     public void run() {
-        while(true) {
+        while(!Thread.currentThread().isInterrupted()) {
             // Check if target has been summoned and do something
-            this.onTargetSummoned();
+            if (this.rowTarget != null && this.columnTarget != null) {
+                //System.out.println("New Food target at "+this.rowTarget+";"+this.columnTarget);
+
+                // get path between pigeon and target then move
+            }
 
             this.doRandomMoves();
-        }
-    }
-
-    protected void onTargetSummoned() {
-        if (this.rowTarget != null && this.columnTarget != null) {
-            //System.out.println("New Food target at "+this.rowTarget+";"+this.columnTarget);
-
-            // get path between pigeon and target then move
         }
     }
 
@@ -55,6 +55,8 @@ public abstract class Pigeon implements Observer, Runnable, Cellulable {
             }
             this.eventManager.notify(new PigeonEvent(this, PigeonEvent.PigeonEventType.MOVING, direction));
             Thread.sleep(200);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         } catch (Exception e) {
             Thread.currentThread().interrupt();
             e.printStackTrace();
@@ -68,10 +70,14 @@ public abstract class Pigeon implements Observer, Runnable, Cellulable {
 
             switch (simulationEvent.eventType) {
                 case START_SIMULATION:
-                    new Thread(this).start();
+                    this.currentThread = new Thread(this);
+                    this.currentThread.start();
                     break;
 
                 case STOP_SIMULATION:
+                    if (this.currentThread != null) {
+                        this.currentThread.interrupt();
+                    }
                     break;
             }
         } else if (arg instanceof PlaceEvent) {

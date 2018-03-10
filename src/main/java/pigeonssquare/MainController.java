@@ -28,6 +28,9 @@ public class MainController {
     public ToggleButton actionSimulation;
 
     @FXML
+    public RadioButton none;
+
+    @FXML
     public RadioButton food;
 
     @FXML
@@ -53,15 +56,16 @@ public class MainController {
 
         this.actionSimulation.setOnAction(event -> {
             if (actionSimulation.isSelected()) {
-                actionSimulation.setText("Arrêter la simulation");
+                actionSimulation.setText("Arrêter");
                 this.onStartSimulation();
             } else {
-                actionSimulation.setText("Démarrer la simulation");
+                actionSimulation.setText("Démarrer");
                 this.onStopSimulation();
             }
         });
 
         ToggleGroup actions = new ToggleGroup();
+        this.none.setToggleGroup(actions);
         this.food.setToggleGroup(actions);
         this.rock.setToggleGroup(actions);
 
@@ -75,7 +79,7 @@ public class MainController {
                     action = Food.class;
                     break;
                 default:
-                    action = Food.class;
+                    action = null;
             }
 
             gridView.getController().setAction(action);

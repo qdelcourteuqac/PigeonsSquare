@@ -63,7 +63,7 @@
                         <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                     </VBox.margin>
                 </Label>
-                <ToggleButton fx:id="actionSimulation" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Démarrer la simulation">
+                <ToggleButton fx:id="actionSimulation" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Démarrer">
                <VBox.margin>
                   <Insets />
                </VBox.margin></ToggleButton>
@@ -72,6 +72,7 @@
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </VBox.margin>
             </Separator>
+            <RadioButton fx:id="none" mnemonicParsing="false" text="Aucun" />
             <RadioButton fx:id="food" mnemonicParsing="false" text="Nourriture" />
             <RadioButton fx:id="rock" mnemonicParsing="false" text="Pierre" />
             </VBox>
