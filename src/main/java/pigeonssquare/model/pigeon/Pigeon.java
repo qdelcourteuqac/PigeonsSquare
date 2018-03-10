@@ -16,10 +16,24 @@ public abstract class Pigeon implements Observer, Runnable, Cellulable {
 
     protected EventManager eventManager;
 
+    protected int score;
+
     public Pigeon() {
+        this.currentThread = new Thread(this);
+
         this.eventManager = EventManager.getInstance();
         this.eventManager.addObserver(this);
         this.eventManager.subscribe(this, SimulationEvent.class);
+
+        this.score = 0;
+    }
+
+    public void updateScore() {
+        this.score += 1;
+    }
+
+    public int getScore() {
+        return this.score;
     }
 
     @Override
@@ -45,18 +59,22 @@ public abstract class Pigeon implements Observer, Runnable, Cellulable {
      * Moving strategy
      */
     protected void move() {
-//        this.doRandomMoves();
-        this.goEating();
+        List<Cell> foodCells = this.getEnvironment().getCells(Food.class);
+        if (!foodCells.isEmpty()) {
+            this.goEating(foodCells);
+        } else {
+            this.doRandomMoves();
+        }
     }
 
-    private void goEating() {
-
-        List<Cell> foodCells = this.getEnvironment().getCells(Food.class);
+    private void goEating(List<Cell> foodCells) {
         TreeMap<Double, Cell> distances = new TreeMap<>();
 
         foodCells.forEach((Cell foodCell) -> {
-            double distance = this.getEnvironment().getDistance(this, foodCell.getValue());
-            distances.put(distance, foodCell);
+            try {
+                double distance = this.getEnvironment().getDistance(this, foodCell.getValue());
+                distances.put(distance, foodCell);
+            } catch (IllegalStateException e){ }
         });
 
 
@@ -87,7 +105,6 @@ public abstract class Pigeon implements Observer, Runnable, Cellulable {
                 }
             }
             this.eventManager.notify(new PigeonEvent(this, PigeonEvent.PigeonEventType.MOVING, direction));
-
         }
     }
 
@@ -114,8 +131,10 @@ public abstract class Pigeon implements Observer, Runnable, Cellulable {
 
             switch (simulationEvent.eventType) {
                 case START_SIMULATION:
-                    this.currentThread = new Thread(this);
-                    this.currentThread.start();
+                    if (!this.currentThread.isAlive()) {
+                        this.currentThread = new Thread(this);
+                        this.currentThread.start();
+                    }
                     break;
 
                 case STOP_SIMULATION:

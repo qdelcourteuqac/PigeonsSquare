@@ -7,6 +7,7 @@ import main.java.pigeonssquare.controller.GridController;
 import main.java.pigeonssquare.model.grid.cell.Cellulable;
 import main.java.pigeonssquare.model.grid.event.EventManager;
 import main.java.pigeonssquare.model.grid.event.GridModelEvent;
+import main.java.pigeonssquare.model.pigeon.Pigeon;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -41,15 +42,20 @@ public class GridView extends GridPane implements Observer {
             this.row = row;
             this.column = column;
 
-            Class cellulable = GridView.this.model.getValue(row, column).getClass();
+            Cellulable cellulable = GridView.this.model.getValue(row, column);
 
             // We must have a css class by class name
-            this.getStyleClass().add("Cell");
-            this.getStyleClass().add(cellulable.getSimpleName());
+            this.updateView(cellulable);
         }
 
         public void updateView(Cellulable instance) {
             Platform.runLater(()->{
+                if (instance instanceof Pigeon) {
+                    this.setText(((Pigeon) instance).getScore()+"");
+                } else {
+                    this.setText("");
+                }
+
                 this.getStyleClass().clear();
                 this.getStyleClass().add("Cell");
                 this.getStyleClass().add(instance.getClass().getSimpleName());

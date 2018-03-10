@@ -7,6 +7,8 @@ import main.java.pigeonssquare.model.grid.event.Direction;
 import main.java.pigeonssquare.model.grid.event.EventManager;
 import main.java.pigeonssquare.model.grid.event.GridModelEvent;
 import main.java.pigeonssquare.model.grid.factory.CellulableFactory;
+import main.java.pigeonssquare.model.pigeon.Food;
+import main.java.pigeonssquare.model.pigeon.Pigeon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +71,7 @@ public class GridData {
         return cells[row][column];
     }
 
-    public int[] getCoordinate(Cellulable cellulable) {
+    public int[] getCoordinate(Cellulable cellulable) throws IllegalStateException {
 
         for (int row = 0; row < this.getRowCount(); row++) {
             for (int column = 0; column < this.getColumnCount(); column++) {
@@ -115,9 +117,8 @@ public class GridData {
      *
      * @param cell      cellule à déplacer
      * @param direction direction
-     * @throws Exception
      */
-    public synchronized void moveCell(Cellulable cell, Direction direction) throws Exception {
+    public synchronized void moveCell(Cellulable cell, Direction direction) {
         // check existence of cell in grid
         int cellRow = -1;
         int cellColumn = -1;
@@ -132,7 +133,6 @@ public class GridData {
         }
 
         if (cellRow == -1) {
-            //throw new Exception("Cell does not exist in grid");
             return;
         }
 
@@ -156,15 +156,16 @@ public class GridData {
 
         // check: out of grid
         if (newRow < 0 || newRow >= this.getRowCount() || newColumn < 0 || newColumn >= this.getColumnCount()) {
-            //throw new Exception("Impossible move : Out of grid !");
             return;
         }
 
         // collisions
-        // TODO: collisions with food !
         Cell nextCell = this.getCell(newRow, newColumn);
-        if (!nextCell.getValue().getClass().equals(Ground.class)) {
-            //throw new Exception("Collision with another object which stand already there");
+        if (nextCell.getValue().getClass() == Food.class) {
+            // eat food
+            Pigeon pigeon = (Pigeon) cell;
+            pigeon.updateScore();
+        } else if (!nextCell.getValue().getClass().equals(Ground.class)) {
             return;
         }
 

@@ -89,14 +89,12 @@ public class MainController {
 
     private void onStartSimulation() {
         System.out.println("Start simulation");
-        this.eventManager.setChanged();
-        this.eventManager.notifyObservers(new SimulationEvent(SimulationEvent.SimulationEventType.START_SIMULATION));
+        this.eventManager.notify(new SimulationEvent(SimulationEvent.SimulationEventType.START_SIMULATION));
     }
 
     private void onStopSimulation() {
         System.out.println("Stop simulation");
-        this.eventManager.setChanged();
-        this.eventManager.notifyObservers(new SimulationEvent(SimulationEvent.SimulationEventType.STOP_SIMULATION));
+        this.eventManager.notify(new SimulationEvent(SimulationEvent.SimulationEventType.STOP_SIMULATION));
     }
 
 }
