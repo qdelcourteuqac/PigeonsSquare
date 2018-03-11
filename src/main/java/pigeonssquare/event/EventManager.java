@@ -1,4 +1,4 @@
-package main.java.pigeonssquare.model.grid.event;
+package main.java.pigeonssquare.event;
 
 import java.util.*;
 
@@ -20,6 +20,12 @@ public class EventManager extends Observable {
         return instance;
     }
 
+    /**
+     * Souscrire un observer à un évènement
+     *
+     * @param observer   observer
+     * @param eventClass évènement souhaité
+     */
     public void subscribe(Observer observer, Class<? extends Event> eventClass) {
         List<Class<? extends Event>> list = this.listeners.get(observer);
         if (list == null) {
@@ -33,6 +39,12 @@ public class EventManager extends Observable {
         }
     }
 
+    /**
+     * Désinscrire un observer à un évènement
+     *
+     * @param observer   observer
+     * @param eventClass évènement souhaité
+     */
     public void unsubscribe(Observer observer, Class<? extends Event> eventClass) {
         List<Class<? extends Event>> list = this.listeners.get(observer);
         if (list != null && list.contains(eventClass)) {
@@ -40,6 +52,11 @@ public class EventManager extends Observable {
         }
     }
 
+    /**
+     * Notifie tous les observers inscrits à l'évènement envoyé
+     *
+     * @param event évènement à envoyer
+     */
     public void notify(Event event) {
         this.listeners.forEach((observer, events) -> {
             if (events.contains(event.getClass())) {

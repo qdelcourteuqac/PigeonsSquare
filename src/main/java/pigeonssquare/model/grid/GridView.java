@@ -5,9 +5,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import main.java.pigeonssquare.controller.GridController;
 import main.java.pigeonssquare.model.grid.cell.Cellulable;
-import main.java.pigeonssquare.model.grid.event.EventManager;
-import main.java.pigeonssquare.model.grid.event.GridModelEvent;
-import main.java.pigeonssquare.model.pigeon.Pigeon;
+import main.java.pigeonssquare.event.EventManager;
+import main.java.pigeonssquare.event.GridModelEvent;
+import main.java.pigeonssquare.model.cellulable.Pigeon;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -25,14 +25,19 @@ public class GridView extends GridPane implements Observer {
         this.eventManager.subscribe(this, GridModelEvent.class);
     }
 
+    /**
+     * Accesseur sur le GridController
+     *
+     * @return le GridController
+     */
     public GridController getController() {
         return controller;
     }
 
     /**
-     * Accesseur sur le BoardModel
+     * Accesseur sur le GridModel
      *
-     * @return le BoardModel
+     * @return le GridModel
      */
     public GridModel getModel() {
         return this.model;
@@ -102,6 +107,11 @@ public class GridView extends GridPane implements Observer {
             this.updateView(cellulable);
         }
 
+        /**
+         * Met à jour la vue de la cellule
+         *
+         * @param instance cellule à mettre à jour
+         */
         public void updateView(Cellulable instance) {
             Platform.runLater(() -> {
                 if (instance instanceof Pigeon) {

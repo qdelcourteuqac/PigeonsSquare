@@ -1,11 +1,8 @@
-package main.java.pigeonssquare.model.pigeon;
+package main.java.pigeonssquare.model.cellulable;
 
 import main.java.pigeonssquare.model.grid.cell.Cellulable;
-import main.java.pigeonssquare.model.grid.cell.Ground;
-import main.java.pigeonssquare.model.grid.event.EventManager;
-import main.java.pigeonssquare.model.grid.event.GridModelEvent;
-import main.java.pigeonssquare.model.grid.event.SimulationEvent;
-import main.java.pigeonssquare.model.grid.factory.CellulableFactory;
+import main.java.pigeonssquare.event.EventManager;
+import main.java.pigeonssquare.event.SimulationEvent;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -49,12 +46,7 @@ public class Food implements Cellulable, Runnable, Observer {
                 this.currentThread.interrupt();
                 int[] foodCoordinate = this.getEnvironment().getCoordinate(this);
                 if (foodCoordinate != null) {
-
-                    Cellulable ground = CellulableFactory.getInstanceOf(Ground.class);
-                    this.getEnvironment().initCell(foodCoordinate[0], foodCoordinate[1], ground);
-
-                    this.eventManager.notify(new GridModelEvent(GridModelEvent.EventType.UPDATE_CELL_VIEW_EVENT, ground, foodCoordinate[0], foodCoordinate[1]));
-
+                    this.getEnvironment().destroyCell(foodCoordinate[0], foodCoordinate[1], this);
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();

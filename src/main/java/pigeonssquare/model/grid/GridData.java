@@ -2,13 +2,14 @@ package main.java.pigeonssquare.model.grid;
 
 import main.java.pigeonssquare.model.grid.cell.Cell;
 import main.java.pigeonssquare.model.grid.cell.Cellulable;
-import main.java.pigeonssquare.model.grid.cell.Ground;
-import main.java.pigeonssquare.model.grid.event.Direction;
-import main.java.pigeonssquare.model.grid.event.EventManager;
-import main.java.pigeonssquare.model.grid.event.GridModelEvent;
+import main.java.pigeonssquare.model.cellulable.Ground;
+import main.java.pigeonssquare.event.Direction;
+import main.java.pigeonssquare.event.EventManager;
+import main.java.pigeonssquare.event.GridModelEvent;
 import main.java.pigeonssquare.model.grid.factory.CellulableFactory;
-import main.java.pigeonssquare.model.pigeon.Food;
-import main.java.pigeonssquare.model.pigeon.Pigeon;
+import main.java.pigeonssquare.model.cellulable.Food;
+import main.java.pigeonssquare.model.cellulable.Pigeon;
+import main.java.pigeonssquare.model.cellulable.Rock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +76,13 @@ public class GridData {
         }
     }
 
-    public int[] getCoordinate(Cellulable cellulable) throws IllegalStateException {
+    /**
+     * Retourne les coordonnées d'une cellule
+     *
+     * @param cellulable cellule
+     * @return
+     */
+    public int[] getCoordinate(Cellulable cellulable) {
 
         for (int row = 0; row < this.getRowCount(); row++) {
             for (int column = 0; column < this.getColumnCount(); column++) {
@@ -99,6 +106,20 @@ public class GridData {
     }
 
     /**
+     * Détruire une cellule et la remplace par du Ground
+     *
+     * @param row    ligne de la cellule
+     * @param column colonne de la cellule
+     * @param value  valeur de la cellule
+     */
+    public void destroyCell(int row, int column, Cellulable value) {
+        Cellulable ground = CellulableFactory.getInstanceOf(Ground.class);
+        this.initCell(row, column, ground);
+
+        this.eventManager.notify(new GridModelEvent(GridModelEvent.EventType.UPDATE_CELL_VIEW_EVENT, ground, row, column));
+    }
+
+    /**
      * Place un objet Cellulable sur le plateau de jeu
      *
      * @param action type de la cellule
@@ -114,6 +135,8 @@ public class GridData {
 
             if (cellulable instanceof Food) {
                 ((Food) cellulable).getCurrentThread().start();
+            } else if (cellulable instanceof Rock) {
+                ((Rock) cellulable).getCurrentThread().start();
             }
 
             this.eventManager.notify(new GridModelEvent(GridModelEvent.EventType.UPDATE_CELL_VIEW_EVENT, cellulable, row, column));
@@ -185,6 +208,12 @@ public class GridData {
         this.eventManager.notify(new GridModelEvent(GridModelEvent.EventType.UPDATE_CELL_VIEW_EVENT, cell, newRow, newColumn));
     }
 
+    /**
+     * Retourne la liste des cellules étant du type cellType
+     *
+     * @param cellType Type de la cellule
+     * @return
+     */
     public List<Cell> getCells(Class<? extends Cellulable> cellType) {
         List<Cell> cells = new ArrayList<>();
         for (int row = 0; row < this.getRowCount(); row++) {
@@ -198,6 +227,13 @@ public class GridData {
         return cells;
     }
 
+    /**
+     * Retourne la distance entre deux cellules
+     *
+     * @param from cellule de départ
+     * @param to   cellule d'arrivée
+     * @return
+     */
     public Double getDistance(Cellulable from, Cellulable to) {
         int[] fromCoordinate = this.getCoordinate(from);
         int[] toCoordinate = this.getCoordinate(to);

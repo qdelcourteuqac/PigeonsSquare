@@ -1,4 +1,4 @@
-package main.java.pigeonssquare;
+package main.java.pigeonssquare.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
@@ -8,10 +8,10 @@ import javafx.scene.layout.AnchorPane;
 import main.java.pigeonssquare.model.grid.GridModel;
 import main.java.pigeonssquare.model.grid.GridView;
 import main.java.pigeonssquare.model.grid.cell.Cellulable;
-import main.java.pigeonssquare.model.grid.event.EventManager;
-import main.java.pigeonssquare.model.grid.event.SimulationEvent;
-import main.java.pigeonssquare.model.pigeon.Food;
-import main.java.pigeonssquare.model.pigeon.Rock;
+import main.java.pigeonssquare.event.EventManager;
+import main.java.pigeonssquare.event.SimulationEvent;
+import main.java.pigeonssquare.model.cellulable.Food;
+import main.java.pigeonssquare.model.cellulable.Rock;
 
 public class MainController {
 

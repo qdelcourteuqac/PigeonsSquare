@@ -1,6 +1,6 @@
-package main.java.pigeonssquare.model.grid.event;
+package main.java.pigeonssquare.event;
 
-import main.java.pigeonssquare.model.pigeon.Pigeon;
+import main.java.pigeonssquare.model.cellulable.Pigeon;
 
 public class PigeonEvent extends Event {
 

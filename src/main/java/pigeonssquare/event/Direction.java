@@ -1,4 +1,4 @@
-package main.java.pigeonssquare.model.grid.event;
+package main.java.pigeonssquare.event;
 
 public enum Direction {
     NORTH, EAST, SOUTH, WEST

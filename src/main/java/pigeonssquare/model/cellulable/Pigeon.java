@@ -1,12 +1,11 @@
-package main.java.pigeonssquare.model.pigeon;
+package main.java.pigeonssquare.model.cellulable;
 
 import main.java.pigeonssquare.model.grid.cell.Cell;
 import main.java.pigeonssquare.model.grid.cell.Cellulable;
-import main.java.pigeonssquare.model.grid.cell.Ground;
-import main.java.pigeonssquare.model.grid.event.Direction;
-import main.java.pigeonssquare.model.grid.event.EventManager;
-import main.java.pigeonssquare.model.grid.event.PigeonEvent;
-import main.java.pigeonssquare.model.grid.event.SimulationEvent;
+import main.java.pigeonssquare.event.Direction;
+import main.java.pigeonssquare.event.EventManager;
+import main.java.pigeonssquare.event.PigeonEvent;
+import main.java.pigeonssquare.event.SimulationEvent;
 
 import java.util.*;
 
@@ -29,6 +28,9 @@ public abstract class Pigeon implements Observer, Runnable, Cellulable {
         this.score = 0;
     }
 
+    /**
+     * Met à jour le score: +1 à chaque fois qu'il touche de la nourriture
+     */
     public void updateScore() {
         this.score += 1;
     }
@@ -60,21 +62,33 @@ public abstract class Pigeon implements Observer, Runnable, Cellulable {
      * Moving strategy
      */
     protected synchronized void move() {
-
         List<Direction> availableDirections = this.getAvailableDirection();
 
+        // Direction à adopter si a proximité d'un rock
+        Direction avoidRockDirection = this.avoidRock();
+        // Direction à adopter pour aller vers la nourriture la plus proche
         Direction preferedDirection = this.goEating();
+        // Direction finale choisi
         Direction directionChoosen;
 
-        if (availableDirections.contains(preferedDirection)) {
+        // Choix de la direction
+        if (avoidRockDirection != null && availableDirections.contains(avoidRockDirection)) {
+            directionChoosen = avoidRockDirection;
+        } else if (availableDirections.contains(preferedDirection)) {
             directionChoosen = preferedDirection;
         } else {
             directionChoosen = this.doRandomMoves();
         }
 
+        // Notifie les observers de la demande de déplacement du cellulable
         this.eventManager.notify(new PigeonEvent(this, PigeonEvent.PigeonEventType.MOVING, directionChoosen));
     }
 
+    /**
+     * Retourne les directions disponibles selon la position du cellulable sur le plateau
+     *
+     * @return
+     */
     private List<Direction> getAvailableDirection() {
         List<Direction> availableDirections = new ArrayList<>(4);
 
@@ -111,6 +125,63 @@ public abstract class Pigeon implements Observer, Runnable, Cellulable {
         return availableDirections;
     }
 
+    /**
+     * Retourne la direction à adopter si le cellulable se trouve dans le périmètre d'un rock (encore répulsif)
+     *
+     * @return Direction
+     */
+    private Direction avoidRock() {
+        List<Cell> rockCells = this.getEnvironment().getCells(Rock.class);
+        TreeMap<Double, Cell> distances = new TreeMap<>();
+
+        Direction direction;
+
+        rockCells.forEach((Cell rockCell) -> {
+            Rock rock = (Rock) rockCell.getValue();
+            if (rock.isRepulsive()) {
+                Double distance = this.getEnvironment().getDistance(this, rock);
+                if (distance != null && distance <= Rock.RADIUS_AREA) {
+                    distances.put(distance, rockCell);
+                }
+            }
+        });
+
+        if (distances.isEmpty()) {
+            return null;
+        }
+
+        Cell nearRock = distances.firstEntry().getValue();
+
+        int[] nearRockCoordinate = this.getEnvironment().getCoordinate(nearRock.getValue());
+        int[] ourCoordinate = this.getEnvironment().getCoordinate(this);
+
+        int[] vectorDirection = new int[]{
+                nearRockCoordinate[0] - ourCoordinate[0],
+                nearRockCoordinate[1] - ourCoordinate[1],
+        };
+
+        if (vectorDirection[0] > vectorDirection[1]) {
+            if (vectorDirection[0] > 0) {
+                direction = Direction.NORTH;
+            } else {
+                direction = Direction.WEST;
+            }
+        } else {
+            if (vectorDirection[1] > 0) {
+                direction = Direction.EAST;
+            } else {
+                direction = Direction.SOUTH;
+            }
+        }
+
+        return direction;
+    }
+
+    /**
+     * Retourne la direction à adopter pour aller vers la nourriture la plus proche (encore fraiche)
+     *
+     * @return Direction
+     */
     private Direction goEating() {
 
         List<Cell> foodCells = this.getEnvironment().getCells(Food.class);
@@ -159,6 +230,11 @@ public abstract class Pigeon implements Observer, Runnable, Cellulable {
         return direction;
     }
 
+    /**
+     * Retourne une direction aléatoire
+     *
+     * @return
+     */
     protected Direction doRandomMoves() {
         Random random = new Random();
         int randomValue = random.nextInt(4);

@@ -2,10 +2,10 @@ package main.java.pigeonssquare.model.grid.factory;
 
 import main.java.pigeonssquare.model.grid.GridData;
 import main.java.pigeonssquare.model.grid.cell.Cellulable;
-import main.java.pigeonssquare.model.grid.cell.Ground;
-import main.java.pigeonssquare.model.pigeon.type.CollaredDove;
-import main.java.pigeonssquare.model.pigeon.type.RockDove;
-import main.java.pigeonssquare.model.pigeon.type.StockDove;
+import main.java.pigeonssquare.model.cellulable.Ground;
+import main.java.pigeonssquare.model.cellulable.CollaredDove;
+import main.java.pigeonssquare.model.cellulable.RockDove;
+import main.java.pigeonssquare.model.cellulable.StockDove;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
