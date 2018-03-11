@@ -7,7 +7,6 @@
 .CollaredDove {
     -fx-background-color: black;
     -fx-text-fill: white;
-
 }
 
 .RockDove {
@@ -31,5 +30,3 @@
 .Ground {
     -fx-background-color: brown;
 }
-
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
