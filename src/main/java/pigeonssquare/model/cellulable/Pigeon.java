@@ -69,7 +69,7 @@ public abstract class Pigeon implements Observer, Runnable, Cellulable {
         // Direction à adopter pour aller vers la nourriture la plus proche
         Direction preferedDirection = this.goEating();
         // Direction finale choisi
-        Direction directionChoosen;
+        Direction directionChoosen = null;
 
         // Choix de la direction
         if (avoidRockDirection != null && availableDirections.contains(avoidRockDirection)) {
@@ -77,11 +77,13 @@ public abstract class Pigeon implements Observer, Runnable, Cellulable {
         } else if (availableDirections.contains(preferedDirection)) {
             directionChoosen = preferedDirection;
         } else {
-            directionChoosen = this.doRandomMoves();
+            //directionChoosen = this.doRandomMoves();
         }
 
-        // Notifie les observers de la demande de déplacement du cellulable
-        this.eventManager.notify(new PigeonEvent(this, PigeonEvent.PigeonEventType.MOVING, directionChoosen));
+        if (directionChoosen != null) {
+            // Notifie les observers de la demande de déplacement du cellulable
+            this.eventManager.notify(new PigeonEvent(this, PigeonEvent.PigeonEventType.MOVING, directionChoosen));
+        }
     }
 
     /**
